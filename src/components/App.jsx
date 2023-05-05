@@ -1,8 +1,8 @@
 import React,{useState} from 'react';
 // import BookForm from './BookForm';
 import BooksTable from './BooksTable';
-import Select from 'react-select'
 import BookForm from './BookForm';
+import NavBar from './NavBar';
 
 
 function App() {
@@ -110,9 +110,12 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-300 p-10" id='main'>
-      <BookForm authors={authors} genres={genres} addBook={addBook} ></BookForm>
-      <BooksTable books={books}></BooksTable>
+    <div className='min-h-screen '>
+      <NavBar></NavBar>
+      <main className="p-10" id='main'>
+        <BookForm authors={authors} genres={genres} addBook={addBook}></BookForm>
+        <BooksTable books={books}></BooksTable>
+      </main>
     </div>
   );
 }
