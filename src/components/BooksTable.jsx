@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { BooksContext } from '../context/BooksContext';
 
 export default function BooksTable(props) {
+
+	const {books} = useContext(BooksContext);
+
 	return (
 		<div className="flex flex-col">
 					<div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -17,9 +21,9 @@ export default function BooksTable(props) {
 											<th scope="col" className="px-6 py-4">Rented Copies</th>
 										</tr>
 									</thead>
-                  { props.books.length > 0 ? (
+                  { books.length > 0 ? (
                     <tbody>
-                        { props.books.map((book,index) => 
+                        { books.map((book,index) => 
                           <tr
 													key={book.id}
                           className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">

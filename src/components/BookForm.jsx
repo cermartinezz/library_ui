@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import useToggle from '../hooks/useToggle';
+import { BooksContext } from '../context/BooksContext';
 
 export default function BookForm(props) {
 
   const [bookTitle,setBookTitle] = useState('');
   const [bookAuthor,setBookAuthor] = useState('');
   const [bookGenre,setBookGenre] = useState('');
+  const [errorMessage,setErrorMessage] = useState(false);
   const [visible, toggleVisibility] = useToggle(false);
+  const {authors,genres,books,setBooks} = useContext(BooksContext);
 
   function changeTitle (event) {
     setBookTitle(event.target.value)
@@ -21,12 +24,34 @@ export default function BookForm(props) {
   }
 
   function addBook(event){
-    props.addBook(event,bookAuthor,bookGenre,bookTitle)
-    setBookAuthor('');
-    setBookGenre('');
-    setBookTitle('');
-    toggleVisibility();
+    event.preventDefault();
+
+    if(bookAuthor != '' && bookGenre != '' && bookTitle != ''){
+      let author = authors.filter(author => author.id == bookAuthor)[0];
+      let genre = genres.filter(genre => genre.id == bookGenre)[0];
+
+      setBooks([...books,{
+        id: Math.floor(Math.random() * 100),
+        title: bookTitle,
+        total_of_copies: 1,
+        total_available_copies: 0,
+        total_rented_copies: 1,
+        available_copies: [],
+        rented_copies: [],
+        author: author,
+        genre: genre
+      }]);
+      setBookAuthor('');
+      setBookGenre('');
+      setBookTitle('');
+      toggleVisibility();
+      setErrorMessage(false)
+    }else{
+      setErrorMessage(true)
+    }
   }
+
+    
 
 
 
@@ -36,8 +61,8 @@ export default function BookForm(props) {
       <button
         onClick={toggleVisibility}
         className={visible?
-                  "rounded-full bg-red-400 px-3 py-3 font-bold mb-2" :
-                  "rounded-full bg-blue-400 px-3 py-3 font-bold mb-2"}>
+                  "bg-white hover:bg-gray-100 text-red-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mb-2" :
+                  "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mb-2"}>
         {visible ?'Cancelar':'Agregar Libro'}
       </button>
 
@@ -62,7 +87,7 @@ export default function BookForm(props) {
             <select onChange={changeAuthor} value={bookAuthor} 
                     className='w-full rounded-sm p-1'>
               <option value="">Author...</option>
-              {props.authors.map(item => (
+              {authors.map(item => (
                 <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
@@ -74,7 +99,7 @@ export default function BookForm(props) {
             <select onChange={changeGenre} value={bookGenre} 
                     className='w-full rounded-sm p-1'>
               <option value="">Genre...</option>
-              {props.genres.map(item => (
+              {genres.map(item => (
                 <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
@@ -82,9 +107,14 @@ export default function BookForm(props) {
             </select>
           </div>
           <button
-            className="w-1/5 rounded-full bg-blue-400 hover:bg-blue-500 px-3 py-3 font-bold my-2">
+            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow my-2">
             Agregar Libro
           </button>
+          { errorMessage && (
+              <span className="text-red-800">Fill all the elements to add a new book</span>
+            )
+
+          }
         </form>
       )
 
