@@ -8,6 +8,7 @@ export default function NavBar() {
 
   useEffect(() => {
     window.addEventListener("resize", () => checkToToogleShow(window.innerWidth));
+    checkToToogleShow(window.innerWidth)
   }, []);
 
   function checkToToogleShow(width){

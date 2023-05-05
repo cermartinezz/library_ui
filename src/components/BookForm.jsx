@@ -44,12 +44,12 @@ export default function BookForm(props) {
       { visible && (
         <form action='#' 
               onSubmit={addBook} 
-              className='border p-3 flex flex-col'>
+              className='border p-3 flex flex-col bg-gray-100 space-y-2'>
           <div>
-            <label htmlFor="book_title">Ttitle: </label>
+            <label htmlFor="book_title">Title: </label>
             <input 
               type="text"
-              className='w-full'
+              className='w-full rounded-sm p-1'
               name='book_title'
               id='book_title'
               value={bookTitle}
@@ -59,7 +59,8 @@ export default function BookForm(props) {
           </div>
           <div>
             <label htmlFor="book_author">Auhtor: </label>
-            <select onChange={changeAuthor} value={bookAuthor} className='w-full'>
+            <select onChange={changeAuthor} value={bookAuthor} 
+                    className='w-full rounded-sm p-1'>
               <option value="">Author...</option>
               {props.authors.map(item => (
                 <option key={item.id} value={item.id}>
@@ -70,7 +71,8 @@ export default function BookForm(props) {
           </div>
           <div>
             <label htmlFor="book_genre">Genre: </label>
-            <select onChange={changeGenre} value={bookGenre} className='w-full'>
+            <select onChange={changeGenre} value={bookGenre} 
+                    className='w-full rounded-sm p-1'>
               <option value="">Genre...</option>
               {props.genres.map(item => (
                 <option key={item.id} value={item.id}>
@@ -80,7 +82,7 @@ export default function BookForm(props) {
             </select>
           </div>
           <button
-            className="rounded-full bg-blue-400 hover:bg-blue-500 px-3 py-3 font-bold my-2">
+            className="w-1/5 rounded-full bg-blue-400 hover:bg-blue-500 px-3 py-3 font-bold my-2">
             Agregar Libro
           </button>
         </form>
