@@ -1,8 +1,32 @@
 import React,{useState} from 'react';
+// import BookForm from './BookForm';
 import BooksTable from './BooksTable';
+import Select from 'react-select'
+import BookForm from './BookForm';
 
 
 function App() {
+
+  const [authors] = useState([
+    {
+      id: 1,
+      name: "Carlos Sebastian"
+    },
+    {
+      id: 2,
+      name: "Arturo Gonzales"
+    }
+  ]);
+  const [genres] = useState([
+    {
+      id: 1,
+      name: "Action"
+    },
+    {
+      id: 2,
+      name: "Adventure"
+    }
+  ]);
 
   const [books, setBooks] = useState([
     {
@@ -12,8 +36,8 @@ function App() {
       total_of_copies: 2,
       total_available_copies: 1,
       total_rented_copies: 1,
-      available_copies: {
-          1: {
+      available_copies: [
+            {
               id: 9,
               book_id: 1,
               published_year: 2000,
@@ -21,7 +45,7 @@ function App() {
               created_at: "2023-05-04T07:34:37.000000Z",
               updated_at: "2023-05-04T07:34:37.000000Z"
             }
-        },
+          ],
       rented_copies: [
             {
               id: 1,
@@ -64,11 +88,31 @@ function App() {
     }  
   ]);
 
+
+  function addBook(event,bookAuthor,bookGenre,bookTitle){
+    event.preventDefault();
+
+    let author = authors.filter(author => author.id == bookAuthor)[0];
+    let genre = genres.filter(genre => genre.id == bookGenre)[0];
+
+    setBooks([...books,{
+      id: 3,
+      title: bookTitle,
+      total_of_copies: 1,
+      total_available_copies: 0,
+      total_rented_copies: 1,
+      available_copies: [],
+      rented_copies: [],
+      author: author,
+      genre: genre
+    }  ])
+
+  }
+
   return (
-    <div className="min-h-screen" id='main'>
-      <div className="m-10">
-        <BooksTable books={books}></BooksTable>
-      </div>
+    <div className="min-h-screen bg-gray-300 p-10" id='main'>
+      <BookForm authors={authors} genres={genres} addBook={addBook} ></BookForm>
+      <BooksTable books={books}></BooksTable>
     </div>
   );
 }
