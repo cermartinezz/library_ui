@@ -1,67 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
+import postFetch from '../helpers/postFetch';
+import { useCookies } from 'react-cookie';
+import getCookie from '../helpers/getCookie';
+import Api from '../helpers/api';
 
 export default function LoginForm() {
 
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
-  const [errorForm,setErrorForm] = useState(false);
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [cookies, setCookie] = useCookies();
 
-  
-  function changeEmail(event) {
-    setEmail(event.target.value)
+
+  function onSubmit(data) {
+    getCookie().then(() => {
+      Api.post('/login',data)
+    })
   }
-
-  function changePassword(event) {
-    setPassword(event.target.value)
-  }
-
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if(email != '' && password != ''){
-
-    }else {
-      setErrorForm(true)
-    }
-  }
-
 
   return (
     <div className="w-11/12 max-w-xl min-h-full">
-      <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+      <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4" 
+            onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" for="email">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
             Email
           </label>
           <input  
-                  onChange={changeEmail}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                  {...register("email", { required: true })}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
                   id="email"
                   type="email"
-                  value={email}
                   placeholder="Email"/>
+          {errors.email && <span className='text-red-500'>The email is required</span>}
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" for="password">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
             Password
           </label>
           <input 
-                  onChange={changePassword}
+                  {...register("password", { required: true })}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                   id="password"
                   type="password"
-                  value={password}
                   placeholder="******************" />
+          {errors.password && <span className='text-red-500'>The password is required</span>}
         </div>
-        { errorForm && (
-            <div>
-              <p className="text-red-500">Email and Password are required</p>
-            </div>
-            )
-          }
-
         <div className="flex items-center justify-between">
-          
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Sign In
           </button>

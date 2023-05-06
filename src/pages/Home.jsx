@@ -1,43 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useLocalStorage from './../hooks/useLocalStorage'
 import BookForm from '../components/BookForm';
 import BooksTable from '../components/BooksTable';
 import { BooksContext } from '../context/BooksContext';
-
+import { useQuery } from 'react-query';
+import Api from '../helpers/api';
 
 function Home() {
+  const [books,setBooks] = useLocalStorage('books',[]);
 
-  const [authors,setAuthors] = useLocalStorage('authors',[
-    {
-      id: 1,
-      name: "Carlos Sebastian"
-    },
-    {
-      id: 2,
-      name: "Arturo Gonzales"
-    }
-  ]);
-  const [genres] = useLocalStorage('genres',[
-    {
-      id: 1,
-      name: "Action"
-    },
-    {
-      id: 2,
-      name: "Adventure"
-    }
-  ]);
+  const {data:authors} =  useQuery('authors',fetchData)
 
-  const [books, setBooks] = useLocalStorage('books',[]);
+  async function fetchData(){
+    const response = await Api.get('/authors');
+    return response.data.result.authors;
+  }
+  
+  const {data:genres} =  useQuery('genres',fetchData)
+
+  async function fetchData(){
+    const response = await Api.get('/genres');
+    return response.data.result.genres;
+  }
 
 
   return (
-    <BooksContext.Provider value={{books,setBooks,authors,genres}}>
-      <div className='p-10'>
-        <BookForm></BookForm>
-        <BooksTable></BooksTable>
-      </div>
-    </BooksContext.Provider>
+    <div>
+      { books && (
+          <BooksContext.Provider value={{books,setBooks,authors,genres}}>
+          <div className='p-10'>
+            <BookForm></BookForm>
+            <BooksTable></BooksTable>
+          </div>
+        </BooksContext.Provider>
+      )
+
+    }
+    </div>
   );
 }
 

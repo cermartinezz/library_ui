@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBar from './NavBar'
 import {
   BrowserRouter,
@@ -9,10 +9,7 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import NotFound from '../pages/NotFound';
 
-
-
 export default function Root() {
-
   return (
     <div className='h-full'>
       <BrowserRouter>
