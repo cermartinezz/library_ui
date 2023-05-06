@@ -1,4 +1,3 @@
-import { useCookies } from "react-cookie";
 import { endpoint } from "../config/config";
 
 export default async function asypostFetch(path = "",data = {}, token = null) {

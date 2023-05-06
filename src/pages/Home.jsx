@@ -9,16 +9,16 @@ import Api from '../helpers/api';
 function Home() {
   const [books,setBooks] = useLocalStorage('books',[]);
 
-  const {data:authors} =  useQuery('authors',fetchData)
+  const {data:authors} =  useQuery('authors',fetchAuthors)
 
-  async function fetchData(){
+  async function fetchAuthors(){
     const response = await Api.get('/authors');
     return response.data.result.authors;
   }
   
-  const {data:genres} =  useQuery('genres',fetchData)
+  const {data:genres} =  useQuery('genres',fetchGenres)
 
-  async function fetchData(){
+  async function fetchGenres(){
     const response = await Api.get('/genres');
     return response.data.result.genres;
   }

@@ -1,20 +1,47 @@
-import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import postFetch from '../helpers/postFetch';
-import { useCookies } from 'react-cookie';
 import getCookie from '../helpers/getCookie';
 import Api from '../helpers/api';
+import { useContext, useState } from 'react';
+import { UserContext } from '../context/UserContext';
+import Cookie from "js-cookie";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const [cookies, setCookie] = useCookies();
+  const [hasErrors,setHasErrors] = useState(false); 
+  const [formError,setFormErrors] = useState('');
+  const {user,setUser} = useContext(UserContext);
+  let navigate = useNavigate();
 
 
-  function onSubmit(data) {
-    getCookie().then(() => {
-      Api.post('/login',data)
-    })
+  console.log(user,setUser);
+
+
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors } 
+  } = useForm();
+
+
+  async function onSubmit(form) {
+    try {
+      await getCookie();
+
+      let response = await Api.post('/auth/login',form);
+
+      let {token,user} = response.data.result;
+
+      Cookie.set('token', token , { expires: 1, path: '/'})
+
+      localStorage.setItem('user', JSON.stringify(user));
+      setHasErrors(false);
+      navigate("/");
+    } catch (error) {
+      console.log(error.response.data.message)
+      setHasErrors(true);
+      setFormErrors(error.response.data.message)
+    }
   }
 
   return (
@@ -24,7 +51,7 @@ export default function LoginForm() {
       >
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
+            Email {user ? (user.first_name) : ('no user')}
           </label>
           <input  
                   {...register("email", { required: true })}
@@ -45,6 +72,7 @@ export default function LoginForm() {
                   type="password"
                   placeholder="******************" />
           {errors.password && <span className='text-red-500'>The password is required</span>}
+          {hasErrors && <span className='text-red-500'>{formError}</span>}
         </div>
         <div className="flex items-center justify-between">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
