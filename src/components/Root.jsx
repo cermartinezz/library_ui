@@ -12,8 +12,9 @@ import NotFound from '../pages/NotFound';
 import { UserContext } from '../context/UserContext';
 import Auth from '../helpers/Auth';
 import Home from '../pages/Home';
-import BorrowedBooks from '../pages/BorrowedBooks';
+import ListBooks from '../pages/ListBooks';
 import BookCatalog from '../pages/BookCatalog';
+import Copies from '../pages/Copies';
 
 
 export default function Root() {
@@ -55,7 +56,8 @@ export default function Root() {
           { (user != null && user?.role == 'student') && ( 
               <Routes>
                 <Route path="/" element={<Home />}></Route>
-                <Route path="/borrowed_books" element={<BorrowedBooks />}></Route>
+                <Route path="/books" element={<ListBooks />}></Route>
+                <Route path="/copies/:book_id" element={<Copies />}></Route>
                 <Route path="/login" element={<Navigate to='/' replace/>}></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Routes> 

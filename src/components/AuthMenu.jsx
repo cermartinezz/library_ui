@@ -19,17 +19,24 @@ export default function AuthMenu() {
 
     if (user == null) {
     }else{
-      let fullMenu = (user.role === 'libririan') ? menu.concat([
-        {
-          to: '/borrowed_books',
-          name: "Borrowed Books"
-        }
-      ]) : menu.concat([
+      let fullMenu;
+      fullMenu = (user.role === 'libririan') && [
         {
           to: '/books_catalog',
           name: "Books Catalog"
         }
-      ])
+      ];
+
+      fullMenu = (user.role === 'student') && [
+        {
+          to: '/books',
+          name: "Books"
+        } 
+      ];
+
+      console.log(fullMenu)
+
+      
       setMenu(fullMenu)
     }
 

@@ -3,8 +3,8 @@ import useToggle from '../hooks/useToggle';
 import { BooksContext } from '../context/BooksContext';
 import { useForm } from 'react-hook-form';
 import getCookie from '../helpers/getCookie';
-import Api from '../helpers/api';
 import Cookies from 'js-cookie';
+import Api from '../helpers/api';
 
 export default function BookForm(props) {
 
@@ -28,8 +28,6 @@ export default function BookForm(props) {
       let token = Cookies.get('token');
 
       console.log('token',token)
-
-      // console.log(form)
 
       let response = await Api.post('/books',{
         title: form.title,

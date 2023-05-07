@@ -7,7 +7,7 @@ import Api from '../helpers/api';
 import getCookie from '../helpers/getCookie';
 import Cookies from 'js-cookie';
 
-function BorrowedBooks() {
+function ListBooks() {
 
   const {data:authors} =  useQuery('authors',fetchAuthors)
 
@@ -52,7 +52,6 @@ function BorrowedBooks() {
     <div>
       <BooksContext.Provider value={{books,authors,genres}}>
         <div className="bg-white m-10 p-10 shadow-xl">
-          <BookForm></BookForm>
           <BooksTable></BooksTable>
         </div>
       </BooksContext.Provider>
@@ -60,5 +59,5 @@ function BorrowedBooks() {
   );
 }
 
-export default BorrowedBooks;
+export default ListBooks;
 

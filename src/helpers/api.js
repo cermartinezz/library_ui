@@ -4,6 +4,7 @@ import { endpoint } from "../config/config";
 
 let Api =  axios.create({
   baseURL: endpoint,
+  withCredentials: true,
   headers: {
     'Content-Type':'application/json',
     'Accept': 'application/json'
