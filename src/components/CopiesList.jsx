@@ -4,7 +4,7 @@ import { UserContext } from '../context/UserContext';
 
 export default function CopiesList(props) {
 
-  const {showModal,toggle,setVisibility,setCheckoutBook} = useContext(CheckoutContext);
+  const {setVisibility,setCheckoutBook,setShowAddCopyModalVisibility,setBookDetails} = useContext(CheckoutContext);
   const {user} = useContext(UserContext);
 
   function openModal(copy) {
@@ -13,7 +13,8 @@ export default function CopiesList(props) {
   }
 
   function addCopy(book) {
-    console.log(book)
+    setShowAddCopyModalVisibility(true)
+    setBookDetails(book)
   }
 
 
@@ -21,14 +22,24 @@ export default function CopiesList(props) {
     <div className="flex flex-col border-2 rounded-md border-gray-500 p-4">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">  
-          <h2 className='font-bold mb-2'>{props.title}</h2>
+          <h2 className='font-bold mb-2'>{props.title}</h2> 
+          { user.role == 'librarian' && (
+              <button onClick={() => addCopy(props.book)}
+                className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+              >Add Copy</button>
+            )
+          }
+          
           <div className="overflow-hidden">
             <table className="min-w-full text-left text-sm font-light">
               <thead className="border-b font-medium dark:border-neutral-500">
                 <tr>
                   <th scope="col" className="px-6 py-4">Publisher</th>
                   <th scope="col" className="px-6 py-4">Published Year</th>
-                  <th scope="col" className="px-6 py-4">Action</th>
+                  { user.role == 'student' && (
+                      <th scope="col" className="px-6 py-4">Action</th>
+                    )
+                  }
                 </tr>
               </thead>
               { props.copies.length > 0 ? (
@@ -39,20 +50,13 @@ export default function CopiesList(props) {
                       className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-300">
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{copy.publisher}</td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{copy.published_year}</td>
-                        { user.role == 'librarian' ? (
-                            <td className="whitespace-nowrap px-6 py-4 font-medium">
-                              <button onClick={() => addCopy(copy.book)}
-                                className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
-                              >Add Copy</button>
-                            </td>
-                          ) : (
+                        { user.role == 'student' && (
                             <td className="whitespace-nowrap px-6 py-4 font-medium">
                               <button onClick={() => openModal(copy)}
                                 className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
                               >Checkout Book</button>
                             </td>
                           )
-
                         }
                         
                       </tr>

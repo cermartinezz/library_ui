@@ -10,11 +10,13 @@ import useToggle from '../hooks/useToggle';
 
 export default function Copies() {
 
-  let { book_id } = useParams();
+  let { book_slug } = useParams();
 
   const {data:book,isLoading,refetch} =  useQuery('copies',fetchBookDetails)
+  const [showAddCopyModal,toggleShowAddCopyModal,setShowAddCopyModalVisibility] = useToggle(false)
   const [showModal,toggle,setVisibility] = useToggle(false)
   const [checkoutBook,setCheckoutBook] = useState(null);
+  const [bookDetails,setBookDetails] = useState(null);
 
   async function fetchBookDetails(){
     try {
@@ -22,7 +24,7 @@ export default function Copies() {
 
       let token = Cookies.get('token');
 
-      let response = await Api.get(`/books/${book_id}/copies`,{
+      let response = await Api.get(`/books/${book_slug}/copies`,{
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -45,7 +47,11 @@ export default function Copies() {
   return (
     <div className='bg-white m-10 p-10 shadow-xl'>
       { book && (
-          <CheckoutContext.Provider value={{book,showModal,setVisibility,checkoutBook,setCheckoutBook,refetch}}>
+          <CheckoutContext.Provider value={{
+              book,showModal,setVisibility,checkoutBook,
+              setCheckoutBook,refetch,showAddCopyModal,setShowAddCopyModalVisibility,setBookDetails,
+              bookDetails
+              }}>
             <BookDetails book={book}/>
           </CheckoutContext.Provider>
         )

@@ -53,7 +53,7 @@ export default function Root() {
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/books_catalog" element={<BookCatalog />}></Route>
-                <Route path="/copies/:book_id" element={<Copies />}></Route>
+                <Route path="/copies/:book_slug" element={<Copies />}></Route>
                 <Route path="/login" element={<Navigate to='/' replace/>}></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Routes>
@@ -64,7 +64,7 @@ export default function Root() {
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/books" element={<ListBooks />}></Route>
-                <Route path="/copies/:book_id" element={<Copies />}></Route>
+                <Route path="/copies/:book_slug" element={<Copies />}></Route>
                 <Route path="/borrowed_books" element={<Checkouts />}></Route>
                 <Route path="/login" element={<Navigate to='/' replace/>}></Route>
                 <Route path="*" element={<NotFound />}></Route>

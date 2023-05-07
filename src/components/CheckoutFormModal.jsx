@@ -5,7 +5,7 @@ import Api from '../helpers/api';
 import getCookie from '../helpers/getCookie';
 import Cookies from 'js-cookie';
 
-export default function CheckoutForm() {
+export default function CheckoutFormModal() {
   const {setVisibility,checkoutBook,setCheckoutBook,refetch} = useContext(CheckoutContext);
   const { 
     register, 

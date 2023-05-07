@@ -1,16 +1,22 @@
 import React, { useContext } from 'react'
 import CopiesList from './CopiesList';
 import CheckoutList from './CheckoutList';
-import CheckoutForm from './CheckoutForm';
+import CheckoutFormModal from './CheckoutFormModal';
+import AddCopyModal from './AddCopyModal';
 import { CheckoutContext } from '../context/CheckoutContext';
 
 export default function BookDetails(props) {
-  const {showModal} = useContext(CheckoutContext)
+  const {showModal,showAddCopyModal} = useContext(CheckoutContext)
   console.log(props.book);
   return (
     <div className='space-y-3'>
       { showModal && (
-          <CheckoutForm />
+          <CheckoutFormModal />
+        )
+      }
+
+      { showAddCopyModal && (
+          <AddCopyModal />
         )
       }
 
@@ -22,7 +28,7 @@ export default function BookDetails(props) {
           <p className='font-bold'>Genre: <span className='text-blue-400'>{props.book.genre.name}</span></p>
         </div>
       </div>
-      <CopiesList copies={props.book.available_copies} title="Avaiable Copies" />
+      <CopiesList copies={props.book.available_copies} book={props.book} title="Avaiable Copies" />
       <CheckoutList checkouts={props.book.rented_copies} title="Rented Copies" />
       <CheckoutList checkouts={props.book.checkouts} title="Previous Rented Copies" />
     </div>
