@@ -30,7 +30,11 @@ export default function CheckoutList(props) {
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{checkout.copy.published_year}</td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{checkout.start_date}</td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{checkout.end_date}</td>
-                        <td className="whitespace-nowrap px-6 py-4 font-medium">{checkout.returned ? 'Returned' : 'Not Returned'}</td>
+                        <td  
+                            className={checkout.returned ? 'px-6 py-4' : 'whitespace-nowrap px-6 py-4 font-medium text-red-500'}
+                          >
+                                {checkout.returned ? 'Returned' : 'No Returned'}
+                          </td>
                       </tr>
                     )
 

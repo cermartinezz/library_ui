@@ -31,6 +31,10 @@ export default function AuthMenu() {
         {
           to: '/books',
           name: "Books"
+        },
+        {
+          to: '/borrowed_books',
+          name: "Borrowed Books"
         } 
       ];
 

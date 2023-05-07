@@ -38,7 +38,10 @@ export default function BooksTable(props) {
                         <td className="whitespace-nowrap px-6 py-4">{book.total_available_copies}</td>
                         <td className="whitespace-nowrap px-6 py-4">{book.total_rented_copies}</td>
                         <td className="whitespace-nowrap px-6 py-4">
-                          <Link to={`/copies/${book.slug}`}>Copies</Link>
+                          <Link to={`/copies/${book.slug}`} 
+                            className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>
+                            Copies
+                          </Link>
                         </td>
                       </tr>
                     )

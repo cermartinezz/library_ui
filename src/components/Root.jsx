@@ -15,6 +15,7 @@ import Home from '../pages/Home';
 import ListBooks from '../pages/ListBooks';
 import BookCatalog from '../pages/BookCatalog';
 import Copies from '../pages/Copies';
+import Checkouts from '../pages/Checkouts';
 
 
 export default function Root() {
@@ -58,6 +59,7 @@ export default function Root() {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/books" element={<ListBooks />}></Route>
                 <Route path="/copies/:book_id" element={<Copies />}></Route>
+                <Route path="/borrowed_books" element={<Checkouts />}></Route>
                 <Route path="/login" element={<Navigate to='/' replace/>}></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Routes> 
