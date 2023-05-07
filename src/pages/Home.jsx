@@ -1,43 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import useLocalStorage from './../hooks/useLocalStorage'
-import BookForm from '../components/BookForm';
-import BooksTable from '../components/BooksTable';
-import { BooksContext } from '../context/BooksContext';
-import { useQuery } from 'react-query';
-import Api from '../helpers/api';
+import React, { useContext } from 'react'
+import { NavLink } from 'react-router-dom'
+import { UserContext } from '../context/UserContext';
+import Cookies from 'js-cookie';
 
-function Home() {
-  const [books,setBooks] = useLocalStorage('books',[]);
+export default function Home() {
 
-  const {data:authors} =  useQuery('authors',fetchAuthors)
+  const {user,setUser} = useContext(UserContext);
 
-  async function fetchAuthors(){
-    const response = await Api.get('/authors');
-    return response.data.result.authors;
+  function handleLogout(){
+    localStorage.removeItem('user')
+    Cookies.remove('token')
+    setUser(null)
   }
   
-  const {data:genres} =  useQuery('genres',fetchGenres)
-
-  async function fetchGenres(){
-    const response = await Api.get('/genres');
-    return response.data.result.genres;
-  }
-
-
   return (
-    <div>
-      { books && (
-          <BooksContext.Provider value={{books,setBooks,authors,genres}}>
-          <div className='p-10'>
-            <BookForm></BookForm>
-            <BooksTable></BooksTable>
-          </div>
-        </BooksContext.Provider>
-      )
-
-    }
+    <div className='h-full min-h-screen p-10'>
+      <div className='flex items-center min-h-screen flex-col justify-center rounded-md bg-white border-gray-400 shadow-sm place-content-center p-10 space-y-10'>
+        <h1 className='font-bold text-2xl text-center'>{process.env.REACT_APP_NAME}</h1>
+        {user ? (
+          <NavLink 
+            onClick={handleLogout}
+            className='bg-gray-400 font-bold hover:bg-slate-700 px-4 py-2 rounded text-white text-center w-52' 
+            to='/'>Logout</NavLink>
+        ) : (
+          <NavLink className='bg-blue-500 font-bold hover:bg-blue-700 px-4 py-2 rounded text-white text-center w-52' to='/login'>Login</NavLink>
+        )}
+      </div>
     </div>
-  );
+  )
 }
-
-export default Home;

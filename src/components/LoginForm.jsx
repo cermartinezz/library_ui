@@ -13,10 +13,6 @@ export default function LoginForm() {
   const {user,setUser} = useContext(UserContext);
   let navigate = useNavigate();
 
-
-  console.log(user,setUser);
-
-
   const { 
     register, 
     handleSubmit, 
@@ -36,7 +32,8 @@ export default function LoginForm() {
 
       localStorage.setItem('user', JSON.stringify(user));
       setHasErrors(false);
-      navigate("/");
+      setUser(user)
+      return navigate("/");
     } catch (error) {
       console.log(error.response.data.message)
       setHasErrors(true);
@@ -51,7 +48,7 @@ export default function LoginForm() {
       >
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email {user ? (user.first_name) : ('no user')}
+            Email
           </label>
           <input  
                   {...register("email", { required: true })}

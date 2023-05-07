@@ -1,30 +1,64 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import useToggle from '../hooks/useToggle';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+import Cookies from 'js-cookie';
 
-export default function NavBar() {
+export default function AuthMenu() {
 
   const breakpoint = 1022;
   const [visible, toggleVisibility, changeVisibility] = useToggle(true)
+  const [menu,setMenu] = useState([])
+  const {user,setUser} = useContext(UserContext);
 
   useEffect(() => {
     window.addEventListener("resize", () => checkToToogleShow(window.innerWidth));
     checkToToogleShow(window.innerWidth)
-  }, []);
 
-  function checkToToogleShow(width){
+    
+    console.log('------------------------------------------------------------------')
+    console.log('estas en el menu ok')
+
+    if (user == null) {
+      console.log('el usuario es nulo')
+    }else{
+      console.log("hay usuario user.role === 'libririan'", user.role === 'libririan')
+      let fullMenu = (user.role === 'libririan') ? menu.concat([
+        {
+          to: '/borrowed_books',
+          name: "Borrowed Books"
+        }
+      ]) : menu.concat([
+        {
+          to: '/books_catalog',
+          name: "Books Catalog"
+        }
+      ])
+      console.log('estas en el menu es es el user',user)
+      setMenu(fullMenu)
+    }
+
+    function checkToToogleShow(width){
       if(width > breakpoint){
         changeVisibility(true);
       }else{
         changeVisibility(false);
       }
+    }
+  }, []);
+
+  function handleLogout(){
+    localStorage.removeItem('user')
+    Cookies.remove('token')
+    setUser(null)
   }
 
+ 
   return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <svg className="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
-          <span className="font-semibold text-xl tracking-tight">Library App</span>
+          <NavLink to='/' className="font-semibold text-xl tracking-tight">Library App</NavLink>
         </div>
         <div className="block lg:hidden">
           <button 
@@ -36,31 +70,26 @@ export default function NavBar() {
         { visible && (
             <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
               <div className="text-sm lg:flex-grow">
-                <NavLink
-                  to="/"
+                
+                { menu.map((item,index) => (
+                  <NavLink key={index}
+                  to={item.to}
                   className={({ isActive, isPending }) =>
-                    isPending ? "" : isActive ? "block mt-4 lg:inline-block lg:mt-0 text-white underline hover:text-white mr-4" : "block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-white mr-4"
+                    isPending ? "" : isActive ? "block mt-4 lg:inline-block lg:mt-0 text-white underline hover:text-white mr-4 " : "block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-white mr-4"
                   }
                 >
-                  Home
-                </NavLink>
-                <NavLink
-                  to="/borrowed_books"
-                  className={({ isPending,isActive  }) =>
-                    isPending ? "" : isActive ? "block mt-4 lg:inline-block lg:mt-0 text-white underline hover:text-white mr-4" : "block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-white mr-4"
-                  }
-                >
-                  Borrowed Books
-                </NavLink>
+                  {item.name}
+                </NavLink>))
+
+                        }
               </div>
               <div>
                 <NavLink
-                    to="/login"
-                    className={({ isPending,isActive  }) =>
-                      isPending ? "" : isActive ? "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white border-transparent text-teal-500 bg-white mt-4 lg:mt-0" : "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-                    }
-                  >
-                  Login
+                  onClick={handleLogout}
+                  to='/'
+                  className="inline-block text-sm px-4 py-2 leading-none border rounded  border-white border-transparent mt-4 lg:mt-0 text-teal-500 bg-white"
+                >
+                  Logout
                 </NavLink>
               </div>
             </div>
