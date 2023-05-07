@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { CheckoutContext } from '../context/CheckoutContext'
 
 export default function CopiesList(props) {
 
-  console.log('-------------copies details----------------')
-  console.log(props);
+  const {showModal,toggle,setVisibility,setCheckoutBook} = useContext(CheckoutContext);
+
+  function openModal(copy) {
+    setVisibility(true)
+    setCheckoutBook(copy)
+  }
+
+
   return (
     <div className="flex flex-col border-2 rounded-md border-gray-500 p-4">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -27,7 +34,7 @@ export default function CopiesList(props) {
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{copy.publisher}</td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{copy.published_year}</td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                          <button>Checkout Book</button>
+                          <button onClick={() => openModal(copy)}>Checkout Book</button>
                         </td>
                       </tr>
                     )

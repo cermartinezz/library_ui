@@ -34,9 +34,6 @@ export default function AuthMenu() {
         } 
       ];
 
-      console.log(fullMenu)
-
-      
       setMenu(fullMenu)
     }
 

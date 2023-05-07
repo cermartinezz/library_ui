@@ -2,7 +2,6 @@ import React from 'react'
 
 export default function CheckoutList(props) {
 
-  console.log('-------------CheckoutList----------------')
   let checkouts = props.checkouts;
 
   return (

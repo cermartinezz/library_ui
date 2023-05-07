@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import CopiesList from './CopiesList';
 import CheckoutList from './CheckoutList';
+import CheckoutForm from './CheckoutForm';
+import { CheckoutContext } from '../context/CheckoutContext';
 
 export default function BookDetails(props) {
-  
-  console.log('-------------books details----------------')
-  console.log(props);
-
+  const {showModal} = useContext(CheckoutContext)
   return (
     <div className='space-y-3'>
+      { showModal && (
+          <CheckoutForm />
+        )
+      }
+
       <div className='flex flex-col justify-between border-2 rounded-md border-gray-500 p-4'>
         <h1 className='font-bold text-4xl mb-3'>Books Details</h1>
         <div className='flex flex-col'>

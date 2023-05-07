@@ -1,18 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query';
 import getCookie from '../helpers/getCookie';
 import Cookies from 'js-cookie';
 import Api from '../helpers/api';
 import { useParams } from 'react-router-dom';
 import BookDetails from '../components/BookDetails';
+import { CheckoutContext } from '../context/CheckoutContext';
+import useToggle from '../hooks/useToggle';
 
 export default function Copies() {
 
   let { book_id } = useParams();
 
-  const {data:book,isLoading} =  useQuery('copies',fetchCopies)
+  const {data:book,isLoading,refetch} =  useQuery('copies',fetchBookDetails)
+  const [showModal,toggle,setVisibility] = useToggle(false)
+  const [checkoutBook,setCheckoutBook] = useState(null);
 
-  async function fetchCopies(){
+  async function fetchBookDetails(){
     try {
       await getCookie();
 
@@ -37,13 +41,13 @@ export default function Copies() {
   if (isLoading) return 'Loading...'
   
 
-  console.log(book);
-
 
   return (
     <div className='bg-white m-10 p-10 shadow-xl'>
       { book && (
-          <BookDetails book={book}/>
+          <CheckoutContext.Provider value={{book,showModal,setVisibility,checkoutBook,setCheckoutBook,refetch}}>
+            <BookDetails book={book}/>
+          </CheckoutContext.Provider>
         )
       }
     </div>
