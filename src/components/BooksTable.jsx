@@ -32,12 +32,12 @@ export default function BooksTable(props) {
                       key={book.id}
                       className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-300">
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{book.title}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{book.author.name}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{book.genre.name}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{book.total_of_copies}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{book.total_available_copies}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{book.total_rented_copies}</td>
-                        <td className="whitespace-nowrap px-6 py-4">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{book.author.name}</td>
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{book.genre.name}</td>
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{book.total_of_copies}</td>
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{book.total_available_copies}</td>
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{book.total_rented_copies}</td>
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">
                           <Link to={`/copies/${book.slug}`} 
                             className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>
                             Copies

@@ -34,7 +34,12 @@ export default function Root() {
     <div className='h-screen bg-gray-300'>
       <BrowserRouter>
         <UserContext.Provider value={{user,setUser}}>
-            { user ? (<AuthMenu></AuthMenu>):(<GuestMenu></GuestMenu>)}
+            { user ? (
+              <AuthMenu></AuthMenu>
+            ):(
+              <GuestMenu></GuestMenu>
+            )}
+            
             { (user == null) && (
                 <Routes>
                   <Route path="/" element={<Home />}></Route>
@@ -48,6 +53,7 @@ export default function Root() {
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/books_catalog" element={<BookCatalog />}></Route>
+                <Route path="/copies/:book_id" element={<Copies />}></Route>
                 <Route path="/login" element={<Navigate to='/' replace/>}></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Routes>

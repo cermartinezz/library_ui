@@ -13,14 +13,27 @@ function BookCatalog() {
   const {data:authors} =  useQuery('authors',fetchAuthors)
 
   async function fetchAuthors(){
-    const response = await Api.get('/authors');
+    await getCookie();
+    let token = Cookies.get('token');
+    const response = await Api.get('/authors',{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     return response.data.result.authors;
   }
   
   const {data:genres} =  useQuery('genres',fetchGenres)
 
   async function fetchGenres(){
-    const response = await Api.get('/genres');
+    await getCookie();
+
+    let token = Cookies.get('token');
+    const response = await Api.get('/genres',{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     return response.data.result.genres;
   }
 
@@ -32,7 +45,7 @@ function BookCatalog() {
 
       let token = Cookies.get('token');
 
-      let response = await Api.get('/books',{
+      let response = await Api.get('/books?all=true',{
         headers: {
           'Authorization': `Bearer ${token}`
         }

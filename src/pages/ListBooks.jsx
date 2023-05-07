@@ -52,7 +52,10 @@ function ListBooks() {
     <div>
       <BooksContext.Provider value={{books,authors,genres}}>
         <div className="bg-white m-10 p-10 shadow-xl">
-          <BooksTable></BooksTable>
+          <div className="border-2 rounded-md border-gray-500 p-10">
+            <h1 className='font-bold text-4xl mb-3'>Book List</h1>
+            <BooksTable></BooksTable>
+          </div>
         </div>
       </BooksContext.Provider>
     </div>

@@ -67,7 +67,7 @@ export default function BookForm(props) {
       { visible && (
         <form action='#' 
               onSubmit={handleSubmit(onSubmit)}
-              className='border p-3 flex flex-col bg-gray-100 space-y-2'>
+              className='p-3 flex flex-col border-2 bg-gray-100 border-gray-500 rounded-md shadow-md'>
           <div>
             <label htmlFor="title">Title: </label>
             <input 

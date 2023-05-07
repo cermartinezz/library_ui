@@ -17,17 +17,17 @@ export default function AuthMenu() {
 
     
 
-    if (user == null) {
-    }else{
-      let fullMenu;
-      fullMenu = (user.role === 'libririan') && [
+    if (user != null) {
+      let fullMenu = [];
+
+      fullMenu = (user.role === 'librarian') ? [
         {
           to: '/books_catalog',
           name: "Books Catalog"
         }
-      ];
+      ] : fullMenu;
 
-      fullMenu = (user.role === 'student') && [
+      fullMenu = (user.role === 'student') ? [
         {
           to: '/books',
           name: "Books"
@@ -36,7 +36,7 @@ export default function AuthMenu() {
           to: '/borrowed_books',
           name: "Borrowed Books"
         } 
-      ];
+      ] : fullMenu;
 
       setMenu(fullMenu)
     }

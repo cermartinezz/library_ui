@@ -6,6 +6,7 @@ import { CheckoutContext } from '../context/CheckoutContext';
 
 export default function BookDetails(props) {
   const {showModal} = useContext(CheckoutContext)
+  console.log(props.book);
   return (
     <div className='space-y-3'>
       { showModal && (
@@ -23,6 +24,7 @@ export default function BookDetails(props) {
       </div>
       <CopiesList copies={props.book.available_copies} title="Avaiable Copies" />
       <CheckoutList checkouts={props.book.rented_copies} title="Rented Copies" />
+      <CheckoutList checkouts={props.book.checkouts} title="Previous Rented Copies" />
     </div>
   )
 }

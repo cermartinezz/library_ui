@@ -1,13 +1,19 @@
 import React, { useContext } from 'react'
 import { CheckoutContext } from '../context/CheckoutContext'
+import { UserContext } from '../context/UserContext';
 
 export default function CopiesList(props) {
 
   const {showModal,toggle,setVisibility,setCheckoutBook} = useContext(CheckoutContext);
+  const {user} = useContext(UserContext);
 
   function openModal(copy) {
     setVisibility(true)
     setCheckoutBook(copy)
+  }
+
+  function addCopy(book) {
+    console.log(book)
   }
 
 
@@ -33,9 +39,22 @@ export default function CopiesList(props) {
                       className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-300">
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{copy.publisher}</td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{copy.published_year}</td>
-                        <td className="whitespace-nowrap px-6 py-4 font-medium">
-                          <button onClick={() => openModal(copy)}>Checkout Book</button>
-                        </td>
+                        { user.role == 'librarian' ? (
+                            <td className="whitespace-nowrap px-6 py-4 font-medium">
+                              <button onClick={() => addCopy(copy.book)}
+                                className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+                              >Add Copy</button>
+                            </td>
+                          ) : (
+                            <td className="whitespace-nowrap px-6 py-4 font-medium">
+                              <button onClick={() => openModal(copy)}
+                                className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+                              >Checkout Book</button>
+                            </td>
+                          )
+
+                        }
+                        
                       </tr>
                     )
 

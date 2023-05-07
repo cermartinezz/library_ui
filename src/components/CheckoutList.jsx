@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../context/UserContext';
 
 export default function CheckoutList(props) {
 
   let checkouts = props.checkouts;
+  const {user} = useContext(UserContext);
 
   return (
     <div className="flex flex-col border-2 rounded-md border-gray-500 p-4">
@@ -18,6 +20,10 @@ export default function CheckoutList(props) {
                   <th scope="col" className="px-6 py-4">Start Date</th>
                   <th scope="col" className="px-6 py-4">Return Before</th>
                   <th scope="col" className="px-6 py-4">Returned</th>
+                  { user.role == 'librarian' && (
+                      <th scope="col" className="px-6 py-4">Borrowed by</th>
+                    )
+                  }
                 </tr>
               </thead>
               { checkouts.length > 0 ? (
@@ -31,10 +37,15 @@ export default function CheckoutList(props) {
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{checkout.start_date}</td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{checkout.end_date}</td>
                         <td  
-                            className={checkout.returned ? 'px-6 py-4' : 'whitespace-nowrap px-6 py-4 font-medium text-red-500'}
+                            className={checkout.returned ? 'whitespace-nowrap px-6 py-4 font-medium' : 'whitespace-nowrap px-6 py-4 font-medium text-red-500'}
                           >
                                 {checkout.returned ? 'Returned' : 'No Returned'}
-                          </td>
+                        </td>
+                        { user.role == 'librarian' && (
+                            <th scope="col" className="whitespace-nowrap px-6 py-4 font-medium text-blue-900">{checkout.user.first_name} {checkout.user.last_name}</th>
+                          )
+                        }
+
                       </tr>
                     )
 
