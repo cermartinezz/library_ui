@@ -1,53 +1,53 @@
 import React, { useContext, useState } from 'react'
 import useToggle from '../hooks/useToggle';
 import { BooksContext } from '../context/BooksContext';
+import { useForm } from 'react-hook-form';
+import getCookie from '../helpers/getCookie';
+import Api from '../helpers/api';
+import Cookies from 'js-cookie';
 
 export default function BookForm(props) {
 
-  const [bookTitle,setBookTitle] = useState('');
-  const [bookAuthor,setBookAuthor] = useState('');
-  const [bookGenre,setBookGenre] = useState('');
-  const [errorMessage,setErrorMessage] = useState(false);
   const [visible, toggleVisibility] = useToggle(false);
-  const {authors,genres,books,setBooks} = useContext(BooksContext);
+  const {authors,genres,books} = useContext(BooksContext);
+  const [hasErrors,setHasErrors] = useState(false); 
+  const [isSuccess,setSetIsSuccess] = useState(false); 
+  const [message,setMessage] = useState('');
 
-  function changeTitle (event) {
-    setBookTitle(event.target.value)
-  }
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors },
+    reset
+  } = useForm();
 
-  function changeAuthor (event) {
-    setBookAuthor(event.target.value)
-  }
+  async function onSubmit(form) {
+    try {
+      await getCookie();
 
-  function changeGenre(event) {
-    setBookGenre(event.target.value)
-  }
+      let token = Cookies.get('token');
 
-  function addBook(event){
-    event.preventDefault();
+      console.log('token',token)
 
-    if(bookAuthor != '' && bookGenre != '' && bookTitle != ''){
-      let author = authors.filter(author => author.id == bookAuthor)[0];
-      let genre = genres.filter(genre => genre.id == bookGenre)[0];
+      // console.log(form)
 
-      setBooks([...books,{
-        id: Math.floor(Math.random() * 100),
-        title: bookTitle,
-        total_of_copies: 1,
-        total_available_copies: 0,
-        total_rented_copies: 1,
-        available_copies: [],
-        rented_copies: [],
-        author: author,
-        genre: genre
-      }]);
-      setBookAuthor('');
-      setBookGenre('');
-      setBookTitle('');
-      toggleVisibility();
-      setErrorMessage(false)
-    }else{
-      setErrorMessage(true)
+      let response = await Api.post('/books',{
+        title: form.title,
+        author_id: form.author_id,
+        genre_id: form.genre_id,
+      },{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      console.log(response.data.result)
+
+    } catch (error) {
+      console.log(error.response.data.message)
+      setHasErrors(true);
+      setMessage(error.response.data.result.message)
+      reset()
     }
   }
 
@@ -68,36 +68,39 @@ export default function BookForm(props) {
 
       { visible && (
         <form action='#' 
-              onSubmit={addBook} 
+              onSubmit={handleSubmit(onSubmit)}
               className='border p-3 flex flex-col bg-gray-100 space-y-2'>
           <div>
-            <label htmlFor="book_title">Title: </label>
+            <label htmlFor="title">Title: </label>
             <input 
+              {...register("title", { required: true })}
               type="text"
-              className='w-full rounded-sm p-1'
-              name='book_title'
-              id='book_title'
-              value={bookTitle}
-              onChange={changeTitle}
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+              name='title'
+              id='title'
               placeholder='Insert The Title'
             />
+            {errors.title && <span className='text-red-500'>The title is required</span>}
           </div>
           <div>
-            <label htmlFor="book_author">Auhtor: </label>
-            <select onChange={changeAuthor} value={bookAuthor} 
-                    className='w-full rounded-sm p-1'>
-              <option value="">Author...</option>
-              {authors.map(item => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-          </select>
+            <label htmlFor="author_id">Auhtor: </label>
+            <select 
+                      {...register("author_id", { required: true })}
+                      name='author_id'
+                      className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'>
+                <option value="">Author...</option>
+                {authors.map(item => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+            </select>
+            {errors.author_id && <span className='text-red-500'>The author is required</span>}
           </div>
           <div>
-            <label htmlFor="book_genre">Genre: </label>
-            <select onChange={changeGenre} value={bookGenre} 
-                    className='w-full rounded-sm p-1'>
+            <label htmlFor="genre_id">Genre: </label>
+            <select {...register("genre_id", { required: true })}
+                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'>
               <option value="">Genre...</option>
               {genres.map(item => (
                 <option key={item.id} value={item.id}>
@@ -105,16 +108,14 @@ export default function BookForm(props) {
                 </option>
               ))}
             </select>
+            {errors.genre_id && <span className='text-red-500'>The genre is required</span>}
+            {hasErrors && <span className='text-red-500'>{message}</span>}
+            {isSuccess && <span className='text-green-500'>{message}</span>}
           </div>
           <button
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow my-2">
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Agregar Libro
           </button>
-          { errorMessage && (
-              <span className="text-red-800">Fill all the elements to add a new book</span>
-            )
-
-          }
         </form>
       )
 

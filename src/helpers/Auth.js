@@ -6,13 +6,9 @@ export default {
 
   async fetchUser() {
     try {
-      console.log('--------------------------------------------')
-      console.log('fetching user')
-
       await getCookie();
 
       let token = Cookies.get('token');
-      console.log("token",token)
 
       let response = await Api.get('/auth/user',{
         headers: {
@@ -34,20 +30,15 @@ export default {
   async readUser() {
     const token = Cookies.get('token')
     if(!token){
-      console.log('no hay token se borra todo')
       localStorage.removeItem('user');
       return null;
     }else{
       let authUser = JSON.parse(localStorage.getItem('user'));
-      console.log('Hay token asi que hay que ver si hay usuario')
 
       if(authUser == null){
-        console.log('No hay user en el storage hay que ontenerlo')
         let user = await this.fetchUser();
-        console.info('este es el user despues del fetchuser ', user);
         return user;
       }else{
-        console.log('si habia user este es => ', authUser)
         return authUser
       }
     }

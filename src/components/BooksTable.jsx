@@ -1,9 +1,11 @@
 import React, { useContext } from 'react'
 import { BooksContext } from '../context/BooksContext';
+import { UserContext } from '../context/UserContext';
 
 export default function BooksTable(props) {
 
 	const {books} = useContext(BooksContext);
+  const {user} = useContext(UserContext);
 
 	return (
 		<div className="flex flex-col">
@@ -19,6 +21,7 @@ export default function BooksTable(props) {
 											<th scope="col" className="px-6 py-4">Total Copies</th>
 											<th scope="col" className="px-6 py-4">Available Copies</th>
 											<th scope="col" className="px-6 py-4">Rented Copies</th>
+											<th scope="col" className="px-6 py-4">Actions</th>
 										</tr>
 									</thead>
                   { books.length > 0 ? (
@@ -26,13 +29,14 @@ export default function BooksTable(props) {
                         { books.map((book,index) => 
                           <tr
 													key={book.id}
-                          className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+                          className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-300">
                             <td className="whitespace-nowrap px-6 py-4 font-medium">{book.title}</td>
                             <td className="whitespace-nowrap px-6 py-4">{book.author.name}</td>
                             <td className="whitespace-nowrap px-6 py-4">{book.genre.name}</td>
                             <td className="whitespace-nowrap px-6 py-4">{book.total_of_copies}</td>
                             <td className="whitespace-nowrap px-6 py-4">{book.total_available_copies}</td>
                             <td className="whitespace-nowrap px-6 py-4">{book.total_rented_copies}</td>
+                            <td className="whitespace-nowrap px-6 py-4">{user.role == 'librarian' ? 'Add Copie' : 'Checkout'}</td>
                           </tr>
                         )
 
@@ -41,8 +45,8 @@ export default function BooksTable(props) {
                   ) : (
                     <tbody>
                           <tr
-                            className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                            <td className="whitespace-nowrap px-6 py-4 font-medium text-center" colSpan="6">No books</td>
+                            className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-300">
+                            <td className="whitespace-nowrap px-6 py-4 font-medium text-center" colSpan="7">No books</td>
                           </tr>
                     </tbody>
                   )

@@ -7,12 +7,13 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import BookCatalog from '../pages/BookCatalog';
 import Login from '../pages/Login';
 import NotFound from '../pages/NotFound';
 import { UserContext } from '../context/UserContext';
 import Auth from '../helpers/Auth';
 import Home from '../pages/Home';
+import BorrowedBooks from '../pages/BorrowedBooks';
+import BookCatalog from '../pages/BookCatalog';
 
 
 export default function Root() {
@@ -20,11 +21,8 @@ export default function Root() {
 
 
   useEffect(() => {
-    console.log('------------------------------------------------------------------')
-    console.log('estar en root');
     if(!user){
       Auth.readUser().then(value => {
-        console.log('user value',value);
         setUser(value)
       })
     }
@@ -35,20 +33,34 @@ export default function Root() {
       <BrowserRouter>
         <UserContext.Provider value={{user,setUser}}>
             { user ? (<AuthMenu></AuthMenu>):(<GuestMenu></GuestMenu>)}
-            { (user == null) ? (
-              <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/login" element={<Login />}></Route>
-                <Route path="*" element={<NotFound />}></Route>
-              </Routes>
-            ) : (
+            { (user == null) && (
+                <Routes>
+                  <Route path="/" element={<Home />}></Route>
+                  <Route path="/login" element={<Login />}></Route>
+                  <Route path="*" element={<NotFound />}></Route>
+                </Routes>
+              ) 
+            }
+
+          { (user != null && user?.role == 'librarian') && (
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/books_catalog" element={<BookCatalog />}></Route>
-                <Route path="/login" element={<Navigate to="/" replace />}></Route>
+                <Route path="/login" element={<Navigate to='/' replace/>}></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Routes>
-            ) }
+             )  
+          }
+
+          { (user != null && user?.role == 'student') && ( 
+              <Routes>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="/borrowed_books" element={<BorrowedBooks />}></Route>
+                <Route path="/login" element={<Navigate to='/' replace/>}></Route>
+                <Route path="*" element={<NotFound />}></Route>
+              </Routes> 
+            )  
+          }
           
         </UserContext.Provider>
       </BrowserRouter>

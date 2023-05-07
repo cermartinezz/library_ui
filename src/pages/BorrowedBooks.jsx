@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage'
+import React from 'react';
 import BookForm from '../components/BookForm';
 import BooksTable from '../components/BooksTable';
 import { BooksContext } from '../context/BooksContext';
@@ -8,7 +7,7 @@ import Api from '../helpers/api';
 import getCookie from '../helpers/getCookie';
 import Cookies from 'js-cookie';
 
-function BookCatalog() {
+function BorrowedBooks() {
 
   const {data:authors} =  useQuery('authors',fetchAuthors)
 
@@ -24,7 +23,7 @@ function BookCatalog() {
     return response.data.result.genres;
   }
 
-  const {data:books,isLoading,isFetched} =  useQuery('books',fetchBooks)
+  const {data:books,isLoading} =  useQuery('books',fetchBooks)
 
   async function fetchBooks(){
     try {
@@ -61,4 +60,5 @@ function BookCatalog() {
   );
 }
 
-export default BookCatalog;
+export default BorrowedBooks;
+

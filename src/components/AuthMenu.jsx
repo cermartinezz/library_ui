@@ -16,13 +16,9 @@ export default function AuthMenu() {
     checkToToogleShow(window.innerWidth)
 
     
-    console.log('------------------------------------------------------------------')
-    console.log('estas en el menu ok')
 
     if (user == null) {
-      console.log('el usuario es nulo')
     }else{
-      console.log("hay usuario user.role === 'libririan'", user.role === 'libririan')
       let fullMenu = (user.role === 'libririan') ? menu.concat([
         {
           to: '/borrowed_books',
@@ -34,7 +30,6 @@ export default function AuthMenu() {
           name: "Books Catalog"
         }
       ])
-      console.log('estas en el menu es es el user',user)
       setMenu(fullMenu)
     }
 
