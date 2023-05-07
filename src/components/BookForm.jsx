@@ -9,7 +9,7 @@ import Api from '../helpers/api';
 export default function BookForm(props) {
 
   const [visible, toggleVisibility] = useToggle(false);
-  const {authors,genres,books} = useContext(BooksContext);
+  const {authors,genres,books,refetch} = useContext(BooksContext);
   const [hasErrors,setHasErrors] = useState(false); 
   const [isSuccess,setSetIsSuccess] = useState(false); 
   const [message,setMessage] = useState('');
@@ -39,7 +39,7 @@ export default function BookForm(props) {
         }
       })
 
-      console.log(response.data.result)
+      refetch()
 
     } catch (error) {
       console.log(error.response.data.message)

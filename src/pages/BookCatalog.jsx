@@ -37,7 +37,7 @@ function BookCatalog() {
     return response.data.result.genres;
   }
 
-  const {data:books,isLoading,isFetched} =  useQuery('books',fetchBooks)
+  const {data:books,isLoading,isFetched,refetch} =  useQuery('books',fetchBooks)
 
   async function fetchBooks(){
     try {
@@ -64,7 +64,7 @@ function BookCatalog() {
   
   return (
     <div>
-      <BooksContext.Provider value={{books,authors,genres}}>
+      <BooksContext.Provider value={{books,authors,genres,refetch}}>
         <div className="bg-white m-10 p-10 shadow-xl">
           <BookForm></BookForm>
           <BooksTable></BooksTable>
