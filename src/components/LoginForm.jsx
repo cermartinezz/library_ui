@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import getCookie from '../helpers/getCookie';
 import Api from '../helpers/api';
 import { useContext, useState } from 'react';
-import { UserContext } from '../context/UserContext';
+import { AuthContext } from '../context/AuthContext';
 import Cookie from "js-cookie";
 import { Navigate, useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ export default function LoginForm() {
 
   const [hasErrors,setHasErrors] = useState(false); 
   const [formError,setFormErrors] = useState('');
-  const {user,setUser} = useContext(UserContext);
+  const {user,setUser} = useContext(AuthContext);
   let navigate = useNavigate();
 
   const { 

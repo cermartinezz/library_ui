@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import { UserContext } from '../context/UserContext';
+import { AuthContext } from '../context/AuthContext';
 
 export default function CheckoutList(props) {
 
   let checkouts = props.checkouts;
-  const {user} = useContext(UserContext);
+  const {user} = useContext(AuthContext);
 
   return (
     <div className="flex flex-col border-2 rounded-md border-gray-500 p-4">

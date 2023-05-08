@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import useToggle from '../hooks/useToggle';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
+import { AuthContext } from '../context/AuthContext';
 import Cookies from 'js-cookie';
 
 export default function AuthMenu() {
@@ -9,7 +9,7 @@ export default function AuthMenu() {
   const breakpoint = 1022;
   const [visible, toggleVisibility, changeVisibility] = useToggle(true)
   const [menu,setMenu] = useState([])
-  const {user,setUser} = useContext(UserContext);
+  const {user,setUser} = useContext(AuthContext);
 
   useEffect(() => {
     window.addEventListener("resize", () => checkToToogleShow(window.innerWidth));
@@ -24,6 +24,10 @@ export default function AuthMenu() {
         {
           to: '/books_catalog',
           name: "Books Catalog"
+        },
+        {
+          to: '/users',
+          name: "User"
         }
       ] : fullMenu;
 

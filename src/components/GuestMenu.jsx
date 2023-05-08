@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import useToggle from '../hooks/useToggle';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
-import Auth from '../helpers/Auth';
+import { AuthContext } from '../context/AuthContext';
 import Cookies from 'js-cookie';
 
 export default function GuestMenu() {
@@ -11,7 +10,7 @@ export default function GuestMenu() {
 
   const breakpoint = 1022;
   const [visible, toggleVisibility, changeVisibility] = useToggle(true)
-  const {user} = useContext(UserContext);
+  const {user} = useContext(AuthContext);
 
   useEffect(() => {
     window.addEventListener("resize", () => checkToToogleShow(window.innerWidth));

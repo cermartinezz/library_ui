@@ -9,13 +9,14 @@ import {
 } from "react-router-dom";
 import Login from '../pages/Login';
 import NotFound from '../pages/NotFound';
-import { UserContext } from '../context/UserContext';
+import { AuthContext } from '../context/AuthContext';
 import Auth from '../helpers/Auth';
 import Home from '../pages/Home';
 import ListBooks from '../pages/ListBooks';
 import BookCatalog from '../pages/BookCatalog';
 import Copies from '../pages/Copies';
 import Checkouts from '../pages/Checkouts';
+import UserCatalog from '../pages/UserCatalog';
 
 
 export default function Root() {
@@ -33,7 +34,7 @@ export default function Root() {
   return (
     <div className='h-screen bg-gray-300'>
       <BrowserRouter>
-        <UserContext.Provider value={{user,setUser}}>
+        <AuthContext.Provider value={{user,setUser}}>
             { user ? (
               <AuthMenu></AuthMenu>
             ):(
@@ -54,6 +55,7 @@ export default function Root() {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/books_catalog" element={<BookCatalog />}></Route>
                 <Route path="/copies/:book_slug" element={<Copies />}></Route>
+                <Route path="/users" element={<UserCatalog />}></Route>
                 <Route path="/login" element={<Navigate to='/' replace/>}></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Routes>
@@ -72,7 +74,7 @@ export default function Root() {
             )  
           }
           
-        </UserContext.Provider>
+        </AuthContext.Provider>
       </BrowserRouter>
     </div>
   )

@@ -1,12 +1,10 @@
 import React, { useContext } from 'react'
 import { BooksContext } from '../context/BooksContext';
-import { UserContext } from '../context/UserContext';
 import { Link } from 'react-router-dom';
 
 export default function BooksTable(props) {
 
 	const {books} = useContext(BooksContext);
-  const {user} = useContext(UserContext);
 
 	return (
 		<div className="flex flex-col">

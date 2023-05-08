@@ -61,7 +61,7 @@ export default function BookForm(props) {
         className={visible?
                   "bg-white hover:bg-gray-100 text-red-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mb-2" :
                   "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mb-2"}>
-        {visible ?'Cancelar':'Agregar Libro'}
+        {visible ?'Cancel':'Add Book'}
       </button>
 
       { visible && (
@@ -112,7 +112,7 @@ export default function BookForm(props) {
           </div>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Agregar Libro
+            Add Book
           </button>
         </form>
       )

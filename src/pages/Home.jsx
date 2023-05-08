@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { UserContext } from '../context/UserContext';
+import { AuthContext } from '../context/AuthContext';
 import Cookies from 'js-cookie';
 
 export default function Home() {
 
-  const {user,setUser} = useContext(UserContext);
+  const {user,setUser} = useContext(AuthContext);
 
   function handleLogout(){
     localStorage.removeItem('user')

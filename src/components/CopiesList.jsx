@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { CheckoutContext } from '../context/CheckoutContext'
-import { UserContext } from '../context/UserContext';
+import { AuthContext } from '../context/AuthContext';
 
 export default function CopiesList(props) {
 
   const {setVisibility,setCheckoutBook,setShowAddCopyModalVisibility,setBookDetails} = useContext(CheckoutContext);
-  const {user} = useContext(UserContext);
+  const {user} = useContext(AuthContext);
 
   function openModal(copy) {
     setVisibility(true)
